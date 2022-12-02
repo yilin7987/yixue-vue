@@ -1,5 +1,6 @@
 .DS_Store
 yixue-vue-admin/node_modules/
+yixue-vue-web/node_modules/
 dist/
 npm-debug.log*
 yarn-debug.log*
