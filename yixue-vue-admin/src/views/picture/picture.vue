@@ -161,7 +161,7 @@ export default {
       // 图片展示框开关
       dialogPictureVisible: false,
       // 图片上传地址
-      uploadPictureHost: process.env.VUE_APP_ADMIN_API + '/admin/picture/upload',
+      uploadPictureHost: process.env.VUE_APP_ADMIN_API + '/picture/upload',
       // 当前选中的图片分类uid
       pictureSortUid: undefined,
       // 当前选中的图片分类

@@ -479,11 +479,11 @@
           <el-input v-model="form.outsideLink" auto-complete="off"/>
         </el-form-item>
 
-        <el-form-item label="内容" :label-width="formLabelWidth" prop="content">
+        <el-form-item label="内容" :label-width="formLabelWidth" prop="markdown">
 
           <mavon-editor
             ref="md"
-            v-model="form.content"
+            v-model="form.markdown"
             style="min-height: 400px; width: 1100px"
             @change="change"
           />
@@ -656,7 +656,8 @@ export default {
         // 文章出处
         articlesPart: '',
         // 外链
-        outsideLink: ''
+        outsideLink: '',
+        markdown: ''
       },
       // 表单数据
       form: {
@@ -678,7 +679,8 @@ export default {
         // 文章出处
         articlesPart: '',
         // 外链
-        outsideLink: ''
+        outsideLink: '',
+        markdown: ''
       },
       // 表单验证规则
       rules: {
@@ -707,14 +709,15 @@ export default {
           { required: true, message: '网站评论不能为空', trigger: 'blur' },
           { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
         ],
-        content: [
+        markdown: [
           { required: true, message: '内容不能为空', trigger: 'blur' }
         ],
         outsideLink: [
           { required: true, message: '外链地址不能为空', trigger: 'blur' },
           { pattern: /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/, message: '请输入有效的URcreatedL' }
         ]
-      }
+      },
+      html: ''
     }
   },
   created() {
@@ -731,7 +734,9 @@ export default {
       this.photoVisible = false
       this.form.picture = data
     },
-    change(value, render) { // value为编辑器中的实际内容，即markdown的内容，render为被解析成的html的内容
+    // value为编辑器中的实际内容，即markdown的内容，render为被解析成的html的内容
+    change(value, render) {
+      this.html = render
     },
     // 操作blog（添加或者修改）
     submitForm() {
@@ -739,6 +744,7 @@ export default {
         if (valid) {
           // 添加博客操作
           if (!this.isEditBlog) {
+            this.form.content = this.html
             addBlog(this.form).then(response => {
               if (response.message === '添加成功') {
                 this.$message.success(response.message)
@@ -750,8 +756,8 @@ export default {
                 this.dialogFormVisible = false
               }
             })
-            // console.log(this.form)
           } else {
+            this.form.content = this.html
             editBlog(this.form).then(response => {
               if (response.message === '修改成功') {
                 this.$message.success(response.message)

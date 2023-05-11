@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getTagList(params) {
   return request({
-    url: process.env.VUE_APP_ADMIN_API + '/admin/tag/getList',
+    url: process.env.VUE_APP_ADMIN_API + '/tag/getList',
     method: 'post',
     data: params
   })
@@ -10,7 +10,7 @@ export function getTagList(params) {
 
 export function addTag(params) {
   return request({
-    url: process.env.VUE_APP_ADMIN_API + '/admin/tag/add',
+    url: process.env.VUE_APP_ADMIN_API + '/tag/add',
     method: 'post',
     data: params
   })
@@ -18,7 +18,7 @@ export function addTag(params) {
 
 export function editTag(params) {
   return request({
-    url: process.env.VUE_APP_ADMIN_API + '/admin/tag/edit',
+    url: process.env.VUE_APP_ADMIN_API + '/tag/edit',
     method: 'post',
     data: params
   })
@@ -26,7 +26,7 @@ export function editTag(params) {
 
 export function deleteTag(params) {
   return request({
-    url: process.env.VUE_APP_ADMIN_API + '/admin/tag/delete',
+    url: process.env.VUE_APP_ADMIN_API + '/tag/delete',
     method: 'post',
     data: params
   })

@@ -203,7 +203,6 @@ export default {
             })
           } else {
             addBlogSort(this.form).then(response => {
-              console.log(response)
               if (response.message === '添加成功') {
                 this.$message.success(response.message)
                 this.dialogFormVisible = false

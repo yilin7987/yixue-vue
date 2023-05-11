@@ -42,7 +42,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       // 发送请求
       login(params).then(response => {
-        const { token } = response
+        const token = response.data
         // 向store中设置cookie
         commit('SET_TOKEN', token)
         // 向cookie中设置token
@@ -64,7 +64,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar } = data
+        const { roles, userName, avatar } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -72,7 +72,7 @@ const actions = {
         }
 
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {

@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font: 15px "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    color: #555;
+    background-color: #eee;
+    line-height: 1.5;
+}
+header {
+    position: fixed;
+    top: 0;
+    z-index: 99999;
+}
+nav {
+    width: 1140px;
+    margin: auto;
+    position: relative;
+}
+a {
+    text-decoration: none;
+    color: #555;
+}
+ul, li {
+    list-style: none;
+}
+li {
+    text-align: -webkit-match-parent;
+}
+
+img {
+    border: 0;
+    display: block;
+}
+
+textarea {
+    resize: none !important;
+}
