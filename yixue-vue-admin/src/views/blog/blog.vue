@@ -323,176 +323,182 @@
       :title="title"
       :visible.sync="dialogFormVisible"
       :before-close="closeDialog"
-      width="92% "
-    >
+      width="85% ">
+      <el-steps :active="active" finish-status="success" align-center style="margin: 10px 0 32px ">
+        <el-step title="基本信息"></el-step>
+        <el-step title="博客内容"></el-step>
+      </el-steps>
       <el-form ref="form" :model="form" :rules="rules">
 
-        <el-row>
-          <el-col :span="16">
-            <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-              <el-input v-model="form.title"/>
-            </el-form-item>
+        <div v-if="active==0">
+          <el-row>
+            <el-col :span="16">
+              <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
+                <el-input v-model="form.title"/>
+              </el-form-item>
 
-            <el-form-item label="简介" :label-width="formLabelWidth">
-              <el-input v-model="form.summary"/>
-            </el-form-item>
-          </el-col>
+              <el-form-item label="简介" :label-width="formLabelWidth">
+                <el-input v-model="form.summary"/>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="8">
-            <el-form-item label="标题图" :label-width="formLabelWidth">
-              <div v-if="form.picture" class="imgBody">
-                <i
-                  v-show="icon"
-                  class="el-icon-error inputClass"
-                  @click="deletePhoto()"
-                  @mouseover="icon = true"
-                />
-                <img
-                  :src="form.picture.txUrl"
-                  style="display:inline; width: 195px;height: 105px;"
-                  @mouseover="icon = true"
-                  @mouseout="icon = false"
+            <el-col :span="8">
+              <el-form-item label="标题图" :label-width="formLabelWidth">
+                <div v-if="form.picture" class="imgBody">
+                  <i
+                    v-show="icon"
+                    class="el-icon-error inputClass"
+                    @click="deletePhoto()"
+                    @mouseover="icon = true"
+                  />
+                  <img
+                    :src="form.picture.txUrl"
+                    style="display:inline; width: 195px;height: 105px;"
+                    @mouseover="icon = true"
+                    @mouseout="icon = false"
+                  >
+                </div>
+                <div v-else class="uploadImgBody" @click="checkPhoto">
+                  <i class="el-icon-plus avatar-uploader-icon"/>
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="6.5">
+              <el-form-item label="分类" :label-width="formLabelWidth" prop="blogSortUid">
+                <el-select
+                  v-model="form.blogSortUid"
+                  size="small"
+                  placeholder="请选择"
+                  style="width:150px"
                 >
-              </div>
-              <div v-else class="uploadImgBody" @click="checkPhoto">
-                <i class="el-icon-plus avatar-uploader-icon"/>
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
+                  <el-option
+                    v-for="item in sortOptions"
+                    :key="item.uid"
+                    :label="item.sortName"
+                    :value="item.uid"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
 
-        <el-row>
-          <el-col :span="6.5">
-            <el-form-item label="分类" :label-width="formLabelWidth" prop="blogSortUid">
-              <el-select
-                v-model="form.blogSortUid"
-                size="small"
-                placeholder="请选择"
-                style="width:150px"
-              >
-                <el-option
-                  v-for="item in sortOptions"
+            <el-col :span="6.5">
+              <el-form-item label="标签" label-width="80px" prop="tagList">
+                <el-select
+                  v-model="form.tagList"
+                  value-key="uid"
+                  multiple
+                  size="small"
+                  placeholder="请选择"
+                  style="width:210px"
+                  filterable
+                >
+                  <el-option
+                    v-for="item in tagOptions"
+                    :key="item.uid"
+                    :label="item.content"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="6.5">
+              <el-form-item label="推荐等级" :label-width="maxLineLabelWidth" prop="level">
+                <el-select v-model="form.level" size="small" placeholder="请选择" style="width:210px">
+                  <el-option
+                    v-for="item in blogLevel"
+                    :key="item.uid"
+                    :label="item.label"
+                    :value="parseInt(item.value)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="6.5">
+              <el-form-item label="是否原创" :label-width="formLabelWidth" prop="isOriginal">
+                <el-radio-group v-model="form.isOriginal" size="small">
+                  <el-radio v-for="item in blogOriginal" :key="item.uid" class="radio" :label="item.value" border>
+                    {{ item.label }}
+                  </el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="6.5">
+              <el-form-item label="文章类型" :label-width="formLabelWidth" prop="openComment">
+                <el-radio
+                  v-for="item in blogType"
                   :key="item.uid"
-                  :label="item.sortName"
-                  :value="item.uid"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="6.5">
-            <el-form-item label="标签" label-width="80px" prop="tagList">
-              <el-select
-                v-model="form.tagList"
-                value-key="uid"
-                multiple
-                size="small"
-                placeholder="请选择"
-                style="width:210px"
-                filterable
-              >
-                <el-option
-                  v-for="item in tagOptions"
-                  :key="item.uid"
-                  :label="item.content"
-                  :value="item"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="6.5">
-            <el-form-item label="推荐等级" :label-width="maxLineLabelWidth" prop="level">
-              <el-select v-model="form.level" size="small" placeholder="请选择" style="width:210px">
-                <el-option
-                  v-for="item in blogLevel"
-                  :key="item.uid"
-                  :label="item.label"
-                  :value="parseInt(item.value)"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="6.5">
-            <el-form-item label="是否原创" :label-width="formLabelWidth" prop="isOriginal">
-              <el-radio-group v-model="form.isOriginal" size="small">
-                <el-radio v-for="item in blogOriginal" :key="item.uid" class="radio" :label="item.value" border>
-                  {{ item.label }}
+                  v-model="form.type"
+                  class="radio"
+                  :label="item.value"
+                  border
+                  size="small"
+                >{{ item.label }}
                 </el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="6.5">
-            <el-form-item label="文章类型" :label-width="formLabelWidth" prop="openComment">
-              <el-radio
-                v-for="item in blogType"
-                :key="item.uid"
-                v-model="form.type"
-                class="radio"
-                :label="item.value"
-                border
-                size="small"
-              >{{ item.label }}
-              </el-radio>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="6.5">
-            <el-form-item label="文章评论" :label-width="formLabelWidth" prop="openComment">
-              <el-radio
-                v-for="item in open"
-                :key="item.uid"
-                v-model="form.openComment"
-                class="radio"
-                :label="item.value"
-                border
-                size="small"
-              >{{ item.label }}
-              </el-radio>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="4.5">
-            <el-form-item label="是否发布" :label-width="lineLabelWidth" prop="isPublish">
-              <el-radio-group v-model="form.isPublish" size="small">
-                <el-radio v-for="item in blogPublish" :key="item.uid" class="radio" :label="item.value" border>
-                  {{ item.label }}
+            <el-col :span="6.5">
+              <el-form-item label="文章评论" :label-width="formLabelWidth" prop="openComment">
+                <el-radio
+                  v-for="item in open"
+                  :key="item.uid"
+                  v-model="form.openComment"
+                  class="radio"
+                  :label="item.value"
+                  border
+                  size="small"
+                >{{ item.label }}
                 </el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
+              </el-form-item>
+            </el-col>
 
-        <el-form-item v-if="form.isOriginal==0" label="作者" :label-width="formLabelWidth" prop="author">
-          <el-input v-model="form.author" auto-complete="off"/>
-        </el-form-item>
+            <el-col :span="4.5">
+              <el-form-item label="是否发布" :label-width="lineLabelWidth" prop="isPublish">
+                <el-radio-group v-model="form.isPublish" size="small">
+                  <el-radio v-for="item in blogPublish" :key="item.uid" class="radio" :label="item.value" border>
+                    {{ item.label }}
+                  </el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-        <el-form-item v-if="form.isOriginal==0" label="文章出处" :label-width="formLabelWidth">
-          <el-input v-model="form.articlesPart" auto-complete="off"/>
-        </el-form-item>
+          <el-form-item v-if="form.isOriginal==0" label="作者" :label-width="formLabelWidth" prop="author">
+            <el-input v-model="form.author" auto-complete="off"/>
+          </el-form-item>
 
-        <el-form-item v-if="form.type == 1" label="外链" :label-width="formLabelWidth" prop="outsideLink">
-          <el-input v-model="form.outsideLink" auto-complete="off"/>
-        </el-form-item>
+          <el-form-item v-if="form.isOriginal==0" label="文章出处" :label-width="formLabelWidth">
+            <el-input v-model="form.articlesPart" auto-complete="off"/>
+          </el-form-item>
 
-        <el-form-item label="内容" :label-width="formLabelWidth" prop="markdown">
+          <el-form-item v-if="form.type == 1" label="外链" :label-width="formLabelWidth" prop="outsideLink">
+            <el-input v-model="form.outsideLink" auto-complete="off"/>
+          </el-form-item>
+        </div>
+        <div v-if="active==1">
+          <el-form-item label="内容" :label-width="formLabelWidth" prop="markdown">
 
-          <mavon-editor
-            ref="md"
-            v-model="form.markdown"
-            style="min-height: 400px; width: 1100px"
-            @change="change"
-          />
-        </el-form-item>
+            <mavon-editor
+              ref="md"
+              v-model="form.markdown"
+              style="min-height: 400px; width: 1100px"
+              @change="change"
+            />
+          </el-form-item>
+        </div>
 
-        <el-form-item style="float: right; margin-right: 20px;">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button @click="$refs.form.resetFields()">重置</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-form-item style="margin: 20px 0 0 900px; ">
+          <el-button @click="dialogFormVisible = false;active=0">取 消</el-button>
+          <el-button :disabled="active === 0" @click=" active-- ">上一步</el-button>
+          <el-button type="primary" @click="submitForm">{{ subText }}</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -505,10 +511,10 @@
 </template>
 
 <script>
-import { getBlogList, addBlog, editBlog, deleteBlog } from '@/api/blog/blog'
-import { getBlogSortList } from '@/api/blog/blogSort'
-import { getTagList } from '@/api/blog/tag'
-import { mavonEditor } from 'mavon-editor' // 引入mavon-editor组件
+import {getBlogList, addBlog, editBlog, deleteBlog} from '@/api/blog/blog'
+import {getBlogSortList} from '@/api/blog/blogSort'
+import {getTagList} from '@/api/blog/tag'
+import {mavonEditor} from 'mavon-editor' // 引入mavon-editor组件
 import 'mavon-editor/dist/css/index.css' // 引入组件的样式
 import CheckPhoto from '../../components/CheckPhoto'
 
@@ -519,6 +525,8 @@ export default {
   },
   data() {
     return {
+      // 步骤条
+      active: 0,
       // 是否是修改操作
       isEditBlog: false,
       // 控制图片选择器的显示
@@ -685,39 +693,45 @@ export default {
       // 表单验证规则
       rules: {
         title: [
-          { required: true, message: '标题不能为空', trigger: 'blur' }
+          {required: true, message: '标题不能为空', trigger: 'blur'}
         ],
         blogSortUid: [
-          { required: true, message: '分类不能为空', trigger: 'blur' }
+          {required: true, message: '分类不能为空', trigger: 'blur'}
         ],
         tagList: [
-          { required: true, message: '标签不能为空', trigger: 'blur' }
+          {required: true, message: '标签不能为空', trigger: 'blur'}
         ],
         level: [
-          { required: true, message: '推荐等级不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '推荐等级只能为自然数' }
+          {required: true, message: '推荐等级不能为空', trigger: 'blur'},
+          {pattern: /^[0-9]\d*$/, message: '推荐等级只能为自然数'}
         ],
         isPublish: [
-          { required: true, message: '发布字段不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数' }
+          {required: true, message: '发布字段不能为空', trigger: 'blur'},
+          {pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数'}
         ],
         isOriginal: [
-          { required: true, message: '原创字段不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数' }
+          {required: true, message: '原创字段不能为空', trigger: 'blur'},
+          {pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数'}
         ],
         openComment: [
-          { required: true, message: '网站评论不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
+          {required: true, message: '网站评论不能为空', trigger: 'blur'},
+          {pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数'}
         ],
         markdown: [
-          { required: true, message: '内容不能为空', trigger: 'blur' }
+          {required: true, message: '内容不能为空', trigger: 'blur'}
         ],
         outsideLink: [
-          { required: true, message: '外链地址不能为空', trigger: 'blur' },
-          { pattern: /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/, message: '请输入有效的URcreatedL' }
+          {required: true, message: '外链地址不能为空', trigger: 'blur'},
+          {pattern: /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/, message: '请输入有效的URcreatedL'}
         ]
       },
       html: ''
+    }
+  },
+  computed: {
+    // 提交按钮文本
+    subText() {
+      return this.active === 1 ? '提交' : '下一步'
     }
   },
   created() {
@@ -742,9 +756,14 @@ export default {
     submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
+          if (this.active === 0) {
+            this.active = 1
+            return false
+          }
           // 添加博客操作
           if (!this.isEditBlog) {
             this.form.content = this.html
+            console.log(this.form)
             addBlog(this.form).then(response => {
               if (response.message === '添加成功') {
                 this.$message.success(response.message)
@@ -755,6 +774,7 @@ export default {
                 this.$message.error(response.message)
                 this.dialogFormVisible = false
               }
+              this.active = 0
             })
           } else {
             this.form.content = this.html
@@ -769,6 +789,7 @@ export default {
                 this.$refs.form.resetFields()
                 this.dialogFormVisible = false
               }
+              this.active = 0
             })
           }
         } else {
@@ -780,7 +801,7 @@ export default {
     checkPhoto() {
       this.photoVisible = true
     },
-    deletePhoto: function() {
+    deletePhoto: function () {
       this.form.picture = null
     },
     // 关闭窗口
@@ -799,6 +820,7 @@ export default {
       this.title = '增加博客'
       this.dialogFormVisible = true
       this.isEditBlog = false
+      this.active = 0
     },
     // 页面改变时触发
     handleCurrentChange(val) {
@@ -811,6 +833,7 @@ export default {
       this.dialogFormVisible = true
       this.isEditBlog = true
       this.form = row
+      this.active = 0
       // console.log(this.form)
     },
     // 删除blog
@@ -857,7 +880,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    handleFind: function() {
+    handleFind: function () {
       this.currentPage = 1
       this.blogList()
     },
@@ -892,7 +915,7 @@ export default {
       // console.log(params)
     },
     // 分类远程搜索函数
-    sortRemoteMethod: function(query) {
+    sortRemoteMethod: function (query) {
       const params = {}
       params.pageSize = 10
       params.currentPage = 1
@@ -908,7 +931,7 @@ export default {
       }
     },
     // 标签远程搜索函数
-    tagRemoteMethod: function(query) {
+    tagRemoteMethod: function (query) {
       const params = {}
       params.pageSize = 10
       params.currentPage = 1

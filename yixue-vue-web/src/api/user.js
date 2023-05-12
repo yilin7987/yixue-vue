@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function localLogin (params) {
     return request({
-        url:  'http://localhost:8000/yixue-web/user/login',
+        url:  process.env.VUE_APP_WEB_API+'/user/login',
         method: 'post',
         data: params
     })
@@ -10,20 +10,20 @@ export function localLogin (params) {
 
 export function authVerify (params) {
     return request({
-        url:  'http://localhost:8000/yixue-web/user/verify/'+params,
+        url:  process.env.VUE_APP_WEB_API+'/user/verify/'+params,
         method: 'get',
     })
 }
 export function deleteToken(params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/user/deleteToken/' + params,
+        url: process.env.VUE_APP_WEB_API+'/user/deleteToken/' + params,
         method: 'post',
     })
 }
 
 export function editUser(params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/user/editUser',
+        url: process.env.VUE_APP_WEB_API+'/user/editUser',
         method: 'post',
         data: params
     })
@@ -35,7 +35,7 @@ export function editUser(params) {
  */
 export function updateUserPwd(params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/user/updateUserPwd',
+        url: process.env.VUE_APP_WEB_API+'/user/updateUserPwd',
         method: 'post',
         data: params
     })
@@ -47,7 +47,7 @@ export function updateUserPwd(params) {
  */
 export function localRegister(params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/user/register',
+        url: process.env.VUE_APP_WEB_API+'/user/register',
         method: 'post',
         data: params
     })
@@ -56,7 +56,7 @@ export function localRegister(params) {
 //获取验证码
 export function getEmailCode(params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/user/getCode',
+        url: process.env.VUE_APP_WEB_API+'/user/getCode',
         method: 'get',
         params:{
             email:params

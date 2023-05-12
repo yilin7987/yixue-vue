@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getSubjectList(params) {
     return request({
-        url:  'http://localhost:8000/yixue-web/subject/getList',
+        url:  process.env.VUE_APP_WEB_API+'/subject/getList',
         method: 'post',
         data: params
     })
@@ -10,7 +10,7 @@ export function getSubjectList(params) {
 
 export function getSubjectItemList(params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/subjectItem/getItemList',
+        url: process.env.VUE_APP_WEB_API+'/subjectItem/getItemList',
         method: 'post',
         data: params
     })

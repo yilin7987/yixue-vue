@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function searchBlog (params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/search/searchBlog',
+        url: process.env.VUE_APP_WEB_API+'/search/searchBlog',
         method: 'get',
         params
     })
@@ -14,7 +14,7 @@ export function searchBlog (params) {
 
 export function searchBlogByTag (params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/search/searchBlogByTag',
+        url: process.env.VUE_APP_WEB_API+'/search/searchBlogByTag',
         method: 'get',
         params
     })
@@ -22,7 +22,7 @@ export function searchBlogByTag (params) {
 
 export function searchBlogBySort (params) {
     return request({
-        url: 'http://localhost:8000/yixue-web/search/searchBlogBySort',
+        url: process.env.VUE_APP_WEB_API+'/search/searchBlogBySort',
         method: 'get',
         params
     })
@@ -30,7 +30,7 @@ export function searchBlogBySort (params) {
 
 export function searchBlogByAuthor (params) {
     return request({
-        url:  'http://localhost:8000/yixue-web/search/searchBlogByAuthor',
+        url:  process.env.VUE_APP_WEB_API+'/search/searchBlogByAuthor',
         method: 'get',
         params
     })

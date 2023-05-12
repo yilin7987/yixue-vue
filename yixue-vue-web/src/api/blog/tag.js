@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function getTagList(params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/tag/getList',
+    url: process.env.VUE_APP_WEB_API+'/tag/getList',
     method: 'get',
     params
   })
 }
 export function getBlogByTagUid(params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/tag/getBlogByTagUid',
+    url: process.env.VUE_APP_WEB_API+'/tag/getBlogByTagUid',
     method: 'get',
     params
   })

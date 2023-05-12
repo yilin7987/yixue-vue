@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getCommentList (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/getList',
+    url: process.env.VUE_APP_WEB_API+'/comment/getList',
     method: 'post',
     data: params
   })
@@ -10,7 +10,7 @@ export function getCommentList (params) {
 
 export function getCommentListByUser (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/getListByUser',
+    url: process.env.VUE_APP_WEB_API+'/comment/getListByUser',
     method: 'post',
     data: params
   })
@@ -18,7 +18,7 @@ export function getCommentListByUser (params) {
 
 export function getPraiseListByUser (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/getPraiseListByUser',
+    url: process.env.VUE_APP_WEB_API+'/comment/getPraiseListByUser',
     method: 'post',
     data: params
   })
@@ -26,7 +26,7 @@ export function getPraiseListByUser (params) {
 
 export function addComment (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/add',
+    url: process.env.VUE_APP_WEB_API+'/comment/add',
     method: 'post',
     data: params
   })
@@ -34,7 +34,7 @@ export function addComment (params) {
 
 export function deleteComment (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/delete',
+    url: process.env.VUE_APP_WEB_API+ '/comment/delete',
     method: 'post',
     data: params
   })
@@ -44,7 +44,7 @@ export function deleteComment (params) {
 
 export function getUserReceiveCommentCount (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/getUserReceiveCommentCount',
+    url: process.env.VUE_APP_WEB_API+'/comment/getUserReceiveCommentCount',
     method: 'get',
     params
   })
@@ -52,7 +52,7 @@ export function getUserReceiveCommentCount (params) {
 
 export function readUserReceiveCommentCount (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/readUserReceiveCommentCount',
+    url: process.env.VUE_APP_WEB_API+'/comment/readUserReceiveCommentCount',
     method: 'post',
     params
   })
@@ -65,7 +65,7 @@ export function readUserReceiveCommentCount (params) {
  */
 export function praiseBlogByUid (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/praiseBlogByUid',
+    url: process.env.VUE_APP_WEB_API+'/comment/praiseBlogByUid',
     method: 'get',
     params
   })
@@ -73,7 +73,7 @@ export function praiseBlogByUid (params) {
 
 export function isPraiseByUser (params) {
   return request({
-    url: 'http://localhost:8000/yixue-web/comment/isPraise',
+    url: process.env.VUE_APP_WEB_API+'/comment/isPraise',
     method: 'get',
     params
   })

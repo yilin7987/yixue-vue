@@ -366,7 +366,7 @@ export default {
         return {
             imagecropperShow: false,
             imagecropperKey: 0,
-            url: "http://localhost:8000/yixue-admin/avatar/upload",
+            url: process.env.VUE_APP_WEB_API+"/avatar/upload",
             // 激活的标签
             activeName: "0",
             //个人中心显示
