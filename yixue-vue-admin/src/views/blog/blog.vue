@@ -134,12 +134,17 @@
         </el-col>
 
         <el-col :span="1.5">
+          <el-button class="filter-item" type="info" icon="el-icon-folder-opened" @click="handleSubject">添加专题
+          </el-button>
+        </el-col>
+
+        <el-col :span="1.5">
           <el-button class="filter-item" type="danger" icon="el-icon-delete" @click="handleDeleteBatch">删除选中
           </el-button>
         </el-col>
 
         <el-col :span="1.5">
-          <div style="margin-bottom: 10px;"/>
+          <div style="margin-bottom: 10px;" />
           操作栏
           <el-switch
             v-model="isOperation"
@@ -157,7 +162,7 @@
       @selection-change="handleSelectionChange"
       @sort-change="changeSort"
     >
-      <el-table-column type="selection"/>
+      <el-table-column type="selection" />
 
       <el-table-column label="序号" width="50" align="center">
         <template slot-scope="scope">
@@ -323,10 +328,11 @@
       :title="title"
       :visible.sync="dialogFormVisible"
       :before-close="closeDialog"
-      width="85% ">
+      width="85% "
+    >
       <el-steps :active="active" finish-status="success" align-center style="margin: 10px 0 32px ">
-        <el-step title="基本信息"></el-step>
-        <el-step title="博客内容"></el-step>
+        <el-step title="基本信息" />
+        <el-step title="博客内容" />
       </el-steps>
       <el-form ref="form" :model="form" :rules="rules">
 
@@ -334,11 +340,11 @@
           <el-row>
             <el-col :span="16">
               <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-                <el-input v-model="form.title"/>
+                <el-input v-model="form.title" />
               </el-form-item>
 
               <el-form-item label="简介" :label-width="formLabelWidth">
-                <el-input v-model="form.summary"/>
+                <el-input v-model="form.summary" />
               </el-form-item>
             </el-col>
 
@@ -359,7 +365,7 @@
                   >
                 </div>
                 <div v-else class="uploadImgBody" @click="checkPhoto">
-                  <i class="el-icon-plus avatar-uploader-icon"/>
+                  <i class="el-icon-plus avatar-uploader-icon" />
                 </div>
               </el-form-item>
             </el-col>
@@ -472,15 +478,15 @@
           </el-row>
 
           <el-form-item v-if="form.isOriginal==0" label="作者" :label-width="formLabelWidth" prop="author">
-            <el-input v-model="form.author" auto-complete="off"/>
+            <el-input v-model="form.author" auto-complete="off" />
           </el-form-item>
 
           <el-form-item v-if="form.isOriginal==0" label="文章出处" :label-width="formLabelWidth">
-            <el-input v-model="form.articlesPart" auto-complete="off"/>
+            <el-input v-model="form.articlesPart" auto-complete="off" />
           </el-form-item>
 
           <el-form-item v-if="form.type == 1" label="外链" :label-width="formLabelWidth" prop="outsideLink">
-            <el-input v-model="form.outsideLink" auto-complete="off"/>
+            <el-input v-model="form.outsideLink" auto-complete="off" />
           </el-form-item>
         </div>
         <div v-if="active==1">
@@ -507,21 +513,30 @@
       @choose_data="getChooseData"
       @cancelModel="cancelModel"
     />
+    <SubjectSelect
+      v-if="!isFirstSubjectVisible"
+      :subject-visible="subjectVisible"
+      @cancelModel="cancelSubjectSelect"
+      @selectData="getSelectData"
+    />
   </div>
 </template>
 
 <script>
-import {getBlogList, addBlog, editBlog, deleteBlog} from '@/api/blog/blog'
-import {getBlogSortList} from '@/api/blog/blogSort'
-import {getTagList} from '@/api/blog/tag'
-import {mavonEditor} from 'mavon-editor' // 引入mavon-editor组件
+import { getBlogList, addBlog, editBlog, deleteBlog } from '@/api/blog/blog'
+import { getBlogSortList } from '@/api/blog/blogSort'
+import { getTagList } from '@/api/blog/tag'
+import { mavonEditor } from 'mavon-editor' // 引入mavon-editor组件
 import 'mavon-editor/dist/css/index.css' // 引入组件的样式
 import CheckPhoto from '../../components/CheckPhoto'
+import SubjectSelect from '../../components/SubjectSelect'
+import { addSubjectItemList } from '@/api/subjectItem'
 
 export default {
   components: {
     mavonEditor,
-    CheckPhoto
+    CheckPhoto,
+    SubjectSelect
   },
   data() {
     return {
@@ -644,6 +659,10 @@ export default {
       total: 0,
       // 操作栏开关
       isOperation: false,
+      // 是否显示专题
+      subjectVisible: false,
+      // 专题选择器是否首次显示【用于懒加载】
+      isFirstSubjectVisible: true,
       // 初始表单
       initform: {
         uid: '',
@@ -693,36 +712,36 @@ export default {
       // 表单验证规则
       rules: {
         title: [
-          {required: true, message: '标题不能为空', trigger: 'blur'}
+          { required: true, message: '标题不能为空', trigger: 'blur' }
         ],
         blogSortUid: [
-          {required: true, message: '分类不能为空', trigger: 'blur'}
+          { required: true, message: '分类不能为空', trigger: 'blur' }
         ],
         tagList: [
-          {required: true, message: '标签不能为空', trigger: 'blur'}
+          { required: true, message: '标签不能为空', trigger: 'blur' }
         ],
         level: [
-          {required: true, message: '推荐等级不能为空', trigger: 'blur'},
-          {pattern: /^[0-9]\d*$/, message: '推荐等级只能为自然数'}
+          { required: true, message: '推荐等级不能为空', trigger: 'blur' },
+          { pattern: /^[0-9]\d*$/, message: '推荐等级只能为自然数' }
         ],
         isPublish: [
-          {required: true, message: '发布字段不能为空', trigger: 'blur'},
-          {pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数'}
+          { required: true, message: '发布字段不能为空', trigger: 'blur' },
+          { pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数' }
         ],
         isOriginal: [
-          {required: true, message: '原创字段不能为空', trigger: 'blur'},
-          {pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数'}
+          { required: true, message: '原创字段不能为空', trigger: 'blur' },
+          { pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数' }
         ],
         openComment: [
-          {required: true, message: '网站评论不能为空', trigger: 'blur'},
-          {pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数'}
+          { required: true, message: '网站评论不能为空', trigger: 'blur' },
+          { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
         ],
         markdown: [
-          {required: true, message: '内容不能为空', trigger: 'blur'}
+          { required: true, message: '内容不能为空', trigger: 'blur' }
         ],
         outsideLink: [
-          {required: true, message: '外链地址不能为空', trigger: 'blur'},
-          {pattern: /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/, message: '请输入有效的URcreatedL'}
+          { required: true, message: '外链地址不能为空', trigger: 'blur' },
+          { pattern: /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/, message: '请输入有效的URcreatedL' }
         ]
       },
       html: ''
@@ -735,11 +754,62 @@ export default {
     }
   },
   created() {
-    this.sortRemoteMethod()
-    this.tagRemoteMethod()
+    // 从dashboard传递过来的 tagUid 以及 blogSortUid
+    const tempTag = this.$route.query.tag
+    const tempBlogSort = this.$route.query.blogSort
+
+    if (tempTag !== undefined) {
+      this.tagRemoteMethod(tempTag.name)
+      this.queryParams.tagKeyword = tempTag.tagUid
+    } else {
+      this.sortRemoteMethod()
+    }
+    if (tempBlogSort !== undefined) {
+      this.sortRemoteMethod(tempBlogSort.name)
+      this.queryParams.sortKeyword = tempBlogSort.blogSortUid
+    } else {
+      this.tagRemoteMethod()
+    }
+
     this.blogList()
   },
   methods: {
+    getSelectData(subjectUid) {
+      this.cancelSubjectSelect()
+      // 选中的博客
+      const multipleSelection = this.multipleSelection
+      const subjectItemList = []
+      for (let a = 0; a < multipleSelection.length; a++) {
+        const params = {}
+        params.subjectUid = subjectUid[0]
+        params.blogUid = multipleSelection[a].uid
+        subjectItemList.push(params)
+      }
+      addSubjectItemList(subjectItemList).then(response => {
+        if (response.code === 20000) {
+          this.$message.success(response.message)
+          // 清空选中列表
+          this.multipleSelection = []
+          // 取消表格中的选择
+          this.$refs.articleTable.clearSelection()
+        } else {
+          this.$message.error(response.message)
+        }
+      })
+    },
+    // 关闭专题框
+    cancelSubjectSelect() {
+      this.subjectVisible = false
+    },
+    // 添加至专题
+    handleSubject() {
+      if (this.multipleSelection.length <= 0) {
+        this.$message.error('请先选中需要添加到专题的博客!')
+        return
+      }
+      this.subjectVisible = true
+      this.isFirstSubjectVisible = false
+    },
     // 关闭图片选择框
     cancelModel() {
       this.photoVisible = false
@@ -801,7 +871,7 @@ export default {
     checkPhoto() {
       this.photoVisible = true
     },
-    deletePhoto: function () {
+    deletePhoto: function() {
       this.form.picture = null
     },
     // 关闭窗口
@@ -880,7 +950,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    handleFind: function () {
+    handleFind: function() {
       this.currentPage = 1
       this.blogList()
     },
@@ -915,7 +985,7 @@ export default {
       // console.log(params)
     },
     // 分类远程搜索函数
-    sortRemoteMethod: function (query) {
+    sortRemoteMethod(query) {
       const params = {}
       params.pageSize = 10
       params.currentPage = 1
@@ -931,7 +1001,7 @@ export default {
       }
     },
     // 标签远程搜索函数
-    tagRemoteMethod: function (query) {
+    tagRemoteMethod(query) {
       const params = {}
       params.pageSize = 10
       params.currentPage = 1

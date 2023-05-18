@@ -78,3 +78,11 @@ export function isPraiseByUser (params) {
     params
   })
 }
+
+export function reportComment (params) {
+  return request({
+    url: process.env.VUE_APP_WEB_API + '/comment/report',
+    method: 'post',
+    data: params
+  })
+}

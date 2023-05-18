@@ -7,6 +7,11 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 import '../statis/css/index.css';
+import xss from 'xss'
+// 定义全局XSS解决方法
+Object.defineProperty(Vue.prototype, '$xss', {
+    value: xss
+})
 
 Vue.config.productionTip = false
 

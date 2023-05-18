@@ -54,7 +54,17 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user',
+    children: [{
+      path: 'user',
+      component: () => import('@/views/user.vue'),
+      name: '用户管理',
+      meta: { title: '用户管理', icon: 'dashboard' }
+    }]
+  },
   {
     path: '/blog',
     component: Layout,
@@ -88,7 +98,27 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/subject',
+    component: Layout,
+    redirect: '/subject',
+    name: '专题管理',
+    meta: { title: '专题管理', icon: 'el-icon-picture-outline' },
+    children: [
+      {
+        path: 'subject',
+        name: '专题管理',
+        component: () => import('@/views/subject/subject'),
+        meta: { title: '专题管理', icon: 'el-icon-picture-outline' }
+      },
+      {
+        path: 'subjectItem',
+        name: '专题元素管理',
+        component: () => import('@/views/subject/subjectItem'),
+        meta: { title: '专题元素管理', icon: 'pictureSort' }
+      }
+    ]
+  },
   {
     path: '/picture',
     component: Layout,
@@ -109,9 +139,7 @@ export const constantRoutes = [
         meta: { title: '图片类别管理', icon: 'pictureSort' }
       }
     ]
-  },
-
-
+  }
 ]
 
 /**
