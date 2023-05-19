@@ -12,6 +12,18 @@ module.exports = defineConfig({
 })
 
 module.exports = {
+  publicPath: './',
+  outputDir: 'vue-web',
+  assetsDir: 'static',
+  productionSourceMap: false,
+  devServer: {
+    port: 9527,
+    open: true,
+    overlay: {
+      warnings: false,
+      errors: true
+    },
+  },
   // 一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例
   // 允许对内部的 webpack 配置进行更细粒度的修改
   chainWebpack: config => {

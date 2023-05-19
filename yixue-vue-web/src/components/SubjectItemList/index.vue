@@ -29,7 +29,7 @@
             <el-timeline-item :timestamp="item.blog.createTime" placement="top">
               <el-card>
                 <span class="blogpic">
-                  <a href="javascript:void(0);" @click="goToInfo(item)" title>
+                  <a href="javascript:void(0);" @click="goToInfo(item.blog.uid)" title>
                     <img v-if="item.blog.picture" :src="item.blog.picture.txUrl" alt>
                   </a>
                 </span>
@@ -105,10 +105,6 @@ export default {
           this.currentPage = response.data.current
           this.total = response.data.total
           this.subjectItemlist = oldItemList.concat(itemList);
-          for (let i = 0; i < 10; i++) {
-            this.subjectItemlist = this.subjectItemlist.concat(itemList);
-          }
-
         }
         this.loading = false
       })

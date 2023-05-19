@@ -60,12 +60,6 @@
         @click.native.prevent="handleLogin"
       >登录
       </el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
-
     </el-form>
     <!--花里胡哨的效果-->
     <vue-particles

@@ -544,7 +544,7 @@ export default {
                 // 从cookie中获取token
                 token = getCookie("token")
             }
-            if (token != undefined) {
+            if (token != undefined && token !='' && token != '') {
                 authVerify(token).then(response => {
                     if (response.code === 20000) {
                         this.isLogin = true;
