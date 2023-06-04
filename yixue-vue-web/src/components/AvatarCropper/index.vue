@@ -773,7 +773,7 @@ export default {
       //将图片上传服务器中
       let formParams = new FormData();
       formParams.append("file", data2blob(createImgUrl, mime))
-      formParams.append("token", getCookie('token'))
+      formParams.append("token", getCookie('token-web'))
 
 
       // 监听进度回调

@@ -19,7 +19,7 @@
         style="height: 800px; width: 100%; overflow:auto;"
       >
         <div slot="label" class="sortItem" style="float:left">
-          <i class="el-icon-picture"/>
+          <i class="el-icon-picture" />
           {{ pictureSort.name }}
         </div>
 
@@ -126,18 +126,18 @@
     <el-dialog :title="title" :visible.sync="dialogFormVisible">
 
       <el-upload
+        ref="upload"
         class="upload-demo"
         drag
-        ref="upload"
         name="file"
         :action="uploadPictureHost"
         :on-remove="handleRemove"
         :on-success="fileSuccess"
         multiple
       >
-        <i class="el-icon-upload"></i>
+        <i class="el-icon-upload" />
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传图片，且不超过5MB</div>
+        <div slot="tip" class="el-upload__tip">只能上传图片，且不超过5MB</div>
       </el-upload>
 
     </el-dialog>
@@ -287,7 +287,7 @@ export default {
             // 清空选中的列表
             // this.pictureUids = []
             // this.checkedPicture = []
-            this.handleCurrentChange(1);
+            this.handleCurrentChange(1)
           } else {
             this.$message.error(response.message)
           }
@@ -296,20 +296,30 @@ export default {
     },
     // 复制图片地址
     copyUrl(url) {
-      navigator.clipboard.writeText(url).then(() => {
-        this.$message.success('复制成功')
-      }).catch(() => {
-        this.$message.error('复制失败')
+      const oInput = document.createElement('input')
+      oInput.value = url
+      document.body.appendChild(oInput)
+      oInput.select()
+      document.execCommand('Copy')
+      this.$message({
+        message: '复制成功',
+        type: 'success'
       })
+      oInput.remove()
     },
     // 复制markdown格式的地址
     copyMarkdownUrl(name, url) {
       const text = '![' + name + '](' + url + ')'
-      navigator.clipboard.writeText(text).then(() => {
-        this.$message.success('复制成功')
-      }).catch(() => {
-        this.$message.error('复制失败')
+      const oInput = document.createElement('input')
+      oInput.value = text
+      document.body.appendChild(oInput)
+      oInput.select()
+      document.execCommand('Copy')
+      this.$message({
+        message: '复制成功',
+        type: 'success'
       })
+      oInput.remove()
     },
     clickTab() {
       const index = this.activeName

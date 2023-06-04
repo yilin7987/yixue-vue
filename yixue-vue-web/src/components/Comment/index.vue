@@ -20,7 +20,7 @@
                     <span>回复</span>
                 </span>
 
-                <span class="comment-reply" @click="report(item)">
+        <span class="comment-reply" @click="report(item)">
                     <i class="iconfont icon-comment"></i>
                     <span>举报</span>
                 </span>
@@ -30,7 +30,7 @@
           <div class="reply-content">
             <span class="from-name">{{ reply.user.nickName }}</span>
             <span v-if="reply.toUid != reply.firstCommentUid"
-                  class="to-name">回复&ensp;@{{ reply.toUser.nickName }}:</span>
+                  class="to-name">回复&ensp;@{{ reply.toUser.nickName }}</span>：
             <span v-html="$xss(reply.content, options)"></span>
           </div>
           <div class="reply-bottom">
@@ -185,7 +185,7 @@ export default {
     },
     report(item) {
       let isLogin = this.$store.state.user.isLogin
-      if(!isLogin) {
+      if (!isLogin) {
         this.$notify.error({
           title: '错误',
           message: "登录后才能举报评论哦~",
@@ -196,7 +196,7 @@ export default {
 
       let userUid = this.$store.state.user.userInfo.uid
 
-      if(userUid == item.userUid) {
+      if (userUid == item.userUid) {
         this.$notify.error({
           title: '错误',
           message: "不能举报自己的评论哦~",

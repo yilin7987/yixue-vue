@@ -195,7 +195,7 @@ export default {
                     localLogin(params).then(response => {
                         if (response.code === 20000) {
                             // 跳转到首页
-                            location.replace("http://localhost:8080/#/?token=" + response.data)
+                            location.replace("http://1.12.236.238:9527/#/?token=" + response.data)
                             window.location.reload()
                         } else {
                             this.$message({
